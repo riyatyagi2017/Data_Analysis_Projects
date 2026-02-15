@@ -1,7 +1,6 @@
 # Data_Analysis_Projects
 
-/*
--- Recommendations
+## Recommendations
 City 1: Pune
 		1. Avg rent per customer is less than Rs 500 which is Rs 294.23, 
 		2. highest total revenue,
@@ -17,4 +16,4 @@ City 3: Jaipur
 		2. avg_rent_per_customer is very less which is Rs.156.52
 		3. Avg_sale_per_customer_is  at top 4 ahich is 11644.20.
 
-*/
+
