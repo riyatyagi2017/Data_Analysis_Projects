@@ -189,6 +189,116 @@ SELECT
 	
 FROM city_rent as cr
 JOIN city_table as ct
-ON cr.city_name = ct.city_name;
+ON cr.city_name = ct.city_name
+ORDER BY 4 DESC;
 
 SELECT * FROM city;
+
+
+-- Q.9 Monthly Sales Growth
+-- Sales growth rate: Calculate the percentage growth (or decline) in sales over different time periods (monthly).
+-- by each city
+
+WITH 
+month_sales 
+AS
+(
+SELECT 
+	ci.city_name,
+	EXTRACT(MONTH FROM s.sale_date) as month,
+	EXTRACT(YEAR FROM s.sale_date) as year,
+	SUM(s.total) as total_sale
+FROM sales as s
+JOIN customers as c 
+ON c.customer_id = s.customer_id
+JOIN city as ci
+ON ci.city_id = c.city_id
+GROUP BY 1, 2 ,3
+ORDER BY 1, 3, 2 
+),
+growth_ratio
+AS
+(
+SELECT 
+	city_name,
+	month,
+	year,
+	total_sale as current_month_sale,
+	LAG(total_sale,1) OVER(partition by city_name order by year,month) as last_month_sale
+FROM month_sales
+)
+
+SELECT 
+	city_name,
+	month,
+	year,
+	current_month_sale,
+	last_month_sale,
+	ROUND(((current_month_sale-last_month_sale)::numeric/last_month_sale::numeric) * 100,2) AS growth_rate_percent
+FROM growth_ratio
+WHERE last_month_sale is not null
+
+
+-- Q.10 Market Potential Analysis
+-- Identify top 3 city based on highest sales, return city name, total sale, total rent, total customers, estimated coffee consumer
+
+WITH
+City_table AS
+(
+SELECT 
+	ci.city_name,
+	SUM(s.total) as total_revenue,
+	COUNT(DISTINCT s.customer_id) AS total_unique_cx,
+	ROUND(SUM(s.total)::"numeric"/COUNT(DISTINCT s.customer_id)::"numeric",2) AS Avg_Sale_per_customer
+FROM sales as s
+JOIN customers as c
+on s.customer_id = c.customer_id
+JOIN city as ci
+ON ci.city_id = c.city_id
+GROUP BY 1
+ORDER BY 2
+),
+
+city_rent AS
+(
+SELECT 
+	city_name,
+	estimated_rent,
+	ROUND((population * 0.25)/1000000::numeric,2) as estimated_coffee_consumer_in_ml
+FROM city
+)
+
+SELECT 
+	cr.city_name,
+	total_revenue AS total_sales,
+	cr.estimated_rent as total_rent,
+	ct.total_unique_cx,
+	cr.estimated_coffee_consumer_in_ml,
+	ct.Avg_Sale_per_customer,
+	ROUND(cr.estimated_rent::numeric/ct.total_unique_cx::numeric,2)AS Avg_rent_per_cust
+	
+FROM city_rent as cr
+JOIN city_table as ct
+ON cr.city_name = ct.city_name
+ORDER BY 2 DESC;
+
+/*
+-- Recommendations
+City 1: Pune
+		1. Avg rent per customer is less than Rs 500 which is Rs 294.23, 
+		2. highest total revenue,
+		3. avg_sale_per_customer is also high
+
+City 2: Delhi
+		1. very high estimated_coffee_consumer_in_mil, which is 7.75 million
+		2. total_unique_customers is also very high which is 68, this has the potential for the future
+		3. Avg rent per customer is(still less than Rs 500) which is Rs 330.88
+
+City 3: Jaipur
+		1. highest numeber of unique customers which is 69.
+		2. avg_rent_per_customer is very less which is Rs.156.52
+		3. Avg_sale_per_customer_is  at top 4 ahich is 11644.20.
+
+*/
+
+
