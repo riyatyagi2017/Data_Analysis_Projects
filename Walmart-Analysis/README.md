@@ -110,14 +110,14 @@ This project is an end-to-end data analysis solution designed to extract critica
 
 This section will include your analysis findings:
 - **Sales Insights**:
-      -- Key categories: Top 3  Highest average rated categories are Health and beauty,Electonic Accessories, Sports and Travel
-      -- branches with highest sales : Top3 higest Sale branches are WALM058,WALM009,WALM0069
-      -- preferred payment method is credit card with total quantity sold by users using this method is 9567.
+      - Key categories: Top 3  Highest average rated categories are Health and beauty,Electonic Accessories, Sports and Travel
+      - branches with highest sales : Top3 higest Sale branches are WALM058,WALM009,WALM0069
+      - preferred payment method is credit card with total quantity sold by users using this method is 9567.
 - **Profitability**:
-      -- Most Profitable categories are Fashion Accessories, Home and lifestyle, Electronic Accessories recepectively
+      - Most Profitable categories are Fashion Accessories, Home and lifestyle, Electronic Accessories recepectively
 - **Customer Behavior**:
-      -- Payment preference suggests Credit Card is very much used Payment method by the people in most of the cities.
-      -- peak shooping hour depends on place to place,there is no as such biased towrds any time in a day.
+      - Payment preference suggests Credit Card is very much used Payment method by the people in most of the cities.
+      - peak shooping hour depends on place to place,there is no as such biased towrds any time in a day.
 
 
 ## License
@@ -132,3 +132,4 @@ This project is licensed under the MIT License.
 - **Inspiration**: Walmart’s business case studies on sales and supply chain optimization.
 
 ---
+
